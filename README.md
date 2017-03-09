@@ -1,1 +1,14 @@
 # 2AbsenteesAndALatecomer
+
+<b> Q U I C K S O R T </b> 
+
+INSERT ALGO HERE. 
+
+BIG O TIME CLASSIFICATION (best case, worst case, general runtime).
+
+DATA WE GATHERED WITH TIME EXPERIMENTS / ANALYSIS.
+
+HOW DOES PIVOT POSITION INFLUNCE THE RUNTIME. 
+
+
+
