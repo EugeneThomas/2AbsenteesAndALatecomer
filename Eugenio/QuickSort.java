@@ -1,43 +1,28 @@
-// Eugene Thomas
-// APCS2 pd4
-// HW14 -- So So Quick 
-// 2017-03-08
-
 /*****************************************************
+ * Joanna Zhou
+ * APCS2 pd4
+ * HW15 -- So So Quick
+ * 2017-03-09
  * class QuickSort
- * 
  * Implements quicksort algo to sort an array of ints in place
  *
- * 1. Summary of QuickSort algorithm: 
- *
- * QSort(arr): The way the algorithm works is that you first use the partition 
- *             method to place one of the elements in the array in the right 
- *             place, split the rest of the array into two parts (one part where
- *             all of the values are less than the partition and one part where 
- *             all of the values are greater than the partition). This process
- *             is then repeated via recursion until it does not satisfy the base
- *             case (the end value is greater than the start value). Then, the values 
- *             in the array are recombined to create a sorted list. 
+ * 1. Summary of QuickSort algorithm:
+ * QSort(arr): Picks the first number as a pvtPos, runs a partition with the
+ * whole range. Then it runs partition again on the two ranges that the last
+ * pvtPos separated, until the range shrinks to one. If there is only one
+ * element left in range, then the range is sorted.
  *
  * 2a. Worst pivot choice / array state and associated runtime: 
- *             The worst pivot choice/array state combination would be a situation where you 
- *             run partition with your pivot being your last element in the array, only to 
- *             find that it yields either the largest or smallest value, splitting it into 
- *             one array of length (arr-length - 1). Due to a linear runtime on the partition 
- *             method, and the splitting of arrays then taking n-1 step, this runtime is n^2. 
- * 
+ * A pvtPos that ends up on the edge of a range. Shrinks the range by 1 each
+ * run. O(N^2).
+ *
  * 2b. Best pivot choice / array state and associated runtime:
- *             The ideal pivot choice/array state combination would be a situation in 
- *             which each of the values at a set index, not dependent on the length of 
- *             the array (so the partition only runs a linear time) of any array or 
- *             sub-array would yield a near-midpoint. This runtime would most likely be logn. 
+ * Splits the whole thing in two. Are the partition calls run simultaneously?
+ * If so, O(nLog(n)).
  *
  * 3. Approach to handling duplicate values in array:
- *             I am not sure if there was more code that needed to be implemented to account for
- *             duplicates because mine worked without adding any additional code other than the algo 
- *             that was given. I think this is because when you are splitting values, they will 
- *             eventually end up next to each other (even if the method does not recognize them as 
- *             unique values). 
+ * Irrelevant. Did partition get things in a decent order? Yes, it would.
+ * That will do. This is like binary sort but terrible. Mergesort, right.
  *****************************************************/
 
 /***
@@ -81,65 +66,60 @@ public class QuickSort
 	    retArr[i] = (int)( maxVal * Math.random() );
 	return retArr;
     }
-
-    // helper method for qsort
-
-    public static void qsorth (int[] arr, int a, int b) { 
- 
-	if (a < b) { 
-	    int pvtpos;
-	    pvtpos = partition(arr, a, b, (a+b)/2); 
-	    qsorth(arr, a, pvtpos-1); 
-	    // arr[pvtpos] = the old arr value at (a+b)/2
-	    qsorth(arr,pvtpos+1, b); 
-	} 
-    } 
-
     //--------------^  HELPER METHODS  ^--------------
 
 
-    // a --> lower bound 
-    // b --> upper bound
-    // c --> pivot 
-
-    public static int partition (int[] arr, int a, int b, int c) { 
-	int v = arr[c]; 
-	// swap one 
-	swap(b,c,arr); 
-	int s = a; 
-	for (int i = a; i < b; i++) {
-	    if (arr[i] < v) { 
-		// swap two 
-		swap(i,s,arr);  
-		s++; 
-	    }  
-	} 
-	// swap three 
-	swap(b,s,arr); 
-	return s; 
-    } // end partition()  
 
     /*****************************************************
      * void qsort(int[])
      * @param d -- array of ints to be sorted in place
      *****************************************************/
-
-    public static void qsort( int[] d ) 
-    { 
-        qsorth(d, 0, d.length-1); 
+    public static void qsort( int[] d ) { 
+	helpSort(d, 0, d.length - 1);
     }
 
     // Thinkers are encouraged to roll their own subroutines.
     // Insert your auxiliary helper methods here.
+    public static int partition( int arr[], int left, int right, int pvtPos){
+	int v = arr[pvtPos];
 
- 
+	swap( pvtPos, right, arr);
+	int s = left;
+
+	for( int i = left; i < right; i++ ) {
+	    if ( arr[i] <= v) {
+		swap( i, s, arr );
+		s++;}
+	}
+	swap(s,right,arr);
+
+	return s;
+    }//end mysterion
+
+    public static void helpSort(int[] arr, int left, int right) {
+	if (left == right) {
+	}
+	else {
+	    int s = partition(arr, left, right, (left + right) / 2);
+	    //printArr(arr);
+	    if (s > left) {
+		helpSort(arr, left, s - 1);
+	    }
+	    if (s < right) {
+		helpSort(arr, s + 1, right);
+	    }
+	}
+    }
+
     //main method for testing
     public static void main( String[] args ) 
     {
+
 	//get-it-up-and-running, static test case:
 	int [] arr1 = {7,1,5,12,3};
 	System.out.println("\narr1 init'd to: " );
 	printArr(arr1);
+
 	qsort( arr1 );	
        	System.out.println("arr1 after qsort: " );
 	printArr(arr1);
@@ -159,8 +139,10 @@ public class QuickSort
 	qsort( arrN );
 	System.out.println("arrN after sort: " );
 	printArr(arrN);
+	/*~~~~s~l~i~d~e~~~m~e~~~d~o~w~n~~~~~~~~~~~~~~~~~~~~ (C-k, C-k, C-y) 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
- 
+
 
 	//get-it-up-and-running, static test case w/ dupes:
 	int [] arr2 = {7,1,5,12,3,7};
@@ -170,7 +152,6 @@ public class QuickSort
 	qsort( arr2 );	
        	System.out.println("arr2 after qsort: " );
 	printArr(arr2);
-
 
 	// arrays of randomly generated ints
 	int[] arrMatey = new int[20];
@@ -187,7 +168,8 @@ public class QuickSort
 	qsort( arrMatey );
 	System.out.println("arrMatey after sort: " );
 	printArr(arrMatey);
-
+	/*~~~~s~l~i~d~e~~~m~e~~~d~o~w~n~~~~~~~~~~~~~~~~~~~~ (C-k, C-k, C-y) 
+	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
     }//end main
 

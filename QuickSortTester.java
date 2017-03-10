@@ -1,18 +1,5 @@
 /* ==============================================
 
-                A L G O R I T H M
-		*****************
-
-   Slightly altering the sorthelper function, the 
-   method averTest is run on the parameters 1, 10, 
-   100, 1000, up to 1000000. averTest itself runs by 
-   carrying out the quickSort method fifty times at 
-   once. Then, you take the average of the time of 
-   these fifty runs and returns that value. 
-
-             C A L C U L A T I O N S 
-	     ***********************
-
    Left pvtPos:
 
    1: 136
