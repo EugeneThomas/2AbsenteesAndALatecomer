@@ -100,7 +100,7 @@ public class QuickSort
 	if (left == right) {
 	}
 	else {
-	    int s = partition(arr, left, right, left);
+	    int s = partition(arr, left, right, (left + right) / 2);
 	    //printArr(arr);
 	    if (s > left) {
 		helpSort(arr, left, s - 1);
